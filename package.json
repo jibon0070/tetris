@@ -1,0 +1,13 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jibon0070/tetris.git",
+  "author": "A.R. Jibon",
+  "license": "MIT",
+  "scripts": {
+    "start": "live-server",
+    "build": "tsc",
+    "watch-tsc": "tsc -w"
+  }
+}
