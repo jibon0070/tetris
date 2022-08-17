@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Tetris</title>
     <script src="js/index.js" defer type="module"></script>
     <style>
-        *, *:before, *:after {
+        *,
+        *:before,
+        *:after {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
+
 <body>
-<canvas></canvas>
+    <canvas></canvas>
 </body>
+
 </html>

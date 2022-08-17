@@ -28,11 +28,22 @@ export class Game {
         this.init();
     }
     resize() {
-        this.grid_size = innerHeight < innerWidth ?
-            Math.floor(innerHeight / this.row) :
-            Math.floor(innerWidth / this.columns);
-        this.canvas.width = this.columns * this.grid_size;
-        this.canvas.height = this.row * this.grid_size;
+        const cr = this.columns / this.row;
+        const sr = innerWidth / innerHeight;
+        if (cr < sr) {
+            this.grid_size = Math.floor(innerHeight / this.row);
+            this.canvas.height = this.grid_size * this.row;
+            this.canvas.width = this.grid_size * this.columns;
+        } else {
+            this.grid_size = Math.floor(innerWidth / this.columns);
+            this.canvas.width = this.grid_size * this.columns;
+            this.canvas.height = this.grid_size * this.row;
+        }
+        // this.grid_size = innerHeight < innerWidth ?
+        //     Math.floor(innerHeight / this.row) :
+        //     Math.floor(innerWidth / this.columns);
+        // this.canvas.width = this.columns * this.grid_size;
+        // this.canvas.height = this.row * this.grid_size;
     }
 
     update(delta_time: number) {
