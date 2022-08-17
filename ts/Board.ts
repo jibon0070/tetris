@@ -34,6 +34,5 @@ export default class Board implements Entity {
             }
             this.matrix.push(row);
         }
-        console.log(this.matrix);
     }
 }

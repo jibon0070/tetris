@@ -2,34 +2,79 @@ import { Entity } from "./Entity.js";
 import { Game } from "./Game.js";
 import Vector2 from "./Vector2.js";
 
-class Piece implements Entity {
-    protected matrix!: number[][]
-    protected color!: string;
-    postion!: Vector2;
-    private last_moved: number = 0;
+export default class Piece implements Entity {
+    matrix!: number[][]
+    color!: string;
+    private last_droped: number = 0;
     private movement_speed: number = 1000;
     constructor(private readonly game: Game) {
         this.velocity = new Vector2(0, game.grid_size);
     }
+    position!: Vector2;
+    velocity: Vector2;
+    private movement_queue: Set<string> = new Set();
     protected calculate_start_position(game: Game) {
         this.position = new Vector2(
-            game.ctx.canvas.width / 2 -
-            (game.grid_size * this.matrix[0].length / 2), 0);
+            (game.ctx.canvas.width / 2) -
+            (this.matrix[0].length * game.grid_size / 2) -
+            (this.matrix[0].length % 2 * game.grid_size / 2),
+            0
+        );
     }
 
     update(delta_time: number): void {
-        // this.position.add(this.velocity);
-
-        this.movement_update(delta_time);
+        this.move();
+        this.auto_drop(delta_time);
     }
-    movement_update(delta_time: number) {
-        this.last_moved += delta_time;
-        if (this.last_moved > this.movement_speed) {
-            this.last_moved = 0;
-            this.position.add(this.velocity);
-            this.game.check_for_collision();
+    private rotate() {
+        //rotate matrix clockwise
+        this.matrix = this.matrix.map((row, y) => {
+            return row.map((value, x) => {
+                return this.matrix[x][y];
+            }).reverse();
+        })
+    }
+    private auto_drop(delta_time: number) {
+        this.last_droped += delta_time;
+        if (this.last_droped > this.movement_speed) {
+            this.drop();
         }
     }
+    private move() {
+        if (this.game.input.keys.has('ArrowLeft')) {
+            this.game.input.keys.delete('ArrowLeft');
+            this.position.x -= this.game.grid_size;
+            if (this.game.collides)
+                this.position.x += this.game.grid_size;
+            else
+                this.last_droped = 0;
+
+        } else if (this.game.input.keys.has('ArrowRight')) {
+            this.game.input.keys.delete('ArrowRight');
+            this.position.x += this.game.grid_size;
+            if (this.game.collides)
+                this.position.x -= this.game.grid_size;
+            else
+                this.last_droped = 0;
+        } else if (this.game.input.keys.has('ArrowDown')) {
+            this.game.input.keys.delete('ArrowDown');
+            this.position.y += this.game.grid_size;
+            if (this.game.collides)
+                this.position.y -= this.game.grid_size;
+            else
+                this.last_droped = 0;
+        } else if (this.game.input.keys.has('ArrowUp')) {
+            this.last_droped = 0;
+            this.game.input.keys.delete('ArrowUp');
+            this.rotate();
+        }
+    }
+    private drop() {
+        this.last_droped = 0;
+        this.position.add(this.velocity);
+        this.game.check_for_collision();
+    }
+
     draw(): void {
         this.matrix.forEach((row, y) => {
             row.forEach((value, x) => {
@@ -43,8 +88,6 @@ class Piece implements Entity {
             })
         })
     }
-    position!: Vector2;
-    velocity!: Vector2;
 }
 
 export class IPiece extends Piece {
@@ -116,9 +159,9 @@ export class ZPiece extends Piece {
     constructor(game: Game) {
         super(game);
         this.matrix = [
+            [0, 0, 0],
             [1, 1, 0],
             [0, 1, 1],
-            [0, 0, 0],
         ];
         this.color = 'purple';
         this.calculate_start_position(game);
@@ -129,9 +172,9 @@ export class SPiece extends Piece {
     constructor(game: Game) {
         super(game);
         this.matrix = [
+            [0, 0, 0],
             [0, 1, 1],
             [1, 1, 0],
-            [0, 0, 0],
         ];
         this.color = 'pink';
         this.calculate_start_position(game);
