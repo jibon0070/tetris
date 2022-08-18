@@ -99,7 +99,7 @@ export class IPiece extends Piece {
             [0, 1, 0, 0]
         ];
         this.color = 'red';
-        this.calculate_start_position(game);
+        this.calculate_start_position();
     }
 }
 
@@ -111,7 +111,7 @@ export class OPiece extends Piece {
             [1, 1],
         ];
         this.color = 'blue';
-        this.calculate_start_position(game);
+        this.calculate_start_position();
     }
 }
 
@@ -124,7 +124,7 @@ export class LPiece extends Piece {
             [0, 1, 1],
         ];
         this.color = 'green';
-        this.calculate_start_position(game);
+        this.calculate_start_position();
     }
 }
 
@@ -137,7 +137,7 @@ export class TPiece extends Piece {
             [0, 1, 0],
         ];
         this.color = 'yellow';
-        this.calculate_start_position(game);
+        this.calculate_start_position();
     }
 }
 
@@ -150,7 +150,7 @@ export class JPiece extends Piece {
             [1, 1, 0],
         ];
         this.color = 'orange';
-        this.calculate_start_position(game);
+        this.calculate_start_position();
     }
 }
 
@@ -163,7 +163,7 @@ export class ZPiece extends Piece {
             [0, 1, 1],
         ];
         this.color = 'purple';
-        this.calculate_start_position(game);
+        this.calculate_start_position();
     }
 }
 
@@ -176,7 +176,7 @@ export class SPiece extends Piece {
             [1, 1, 0],
         ];
         this.color = 'pink';
-        this.calculate_start_position(game);
+        this.calculate_start_position();
     }
 }
 
