@@ -8,6 +8,6 @@
   "scripts": {
     "start": "live-server",
     "build": "tsc",
-    "watch-tsc": "tsc -w"
+    "watch": "tsc -w"
   }
 }
