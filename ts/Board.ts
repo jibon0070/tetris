@@ -8,7 +8,7 @@ export default class Board implements Entity {
     draw(): void {
         this.matrix.map((row, y) => {
             row.map((value, x) => {
-                this.game.ctx.fillStyle = typeof value === 'number' ? 'black' : value;
+                this.game.ctx.fillStyle = value;
                 this.game.ctx.fillRect(x * this.game.grid_size, y * this.game.grid_size, this.game.grid_size, this.game.grid_size);
                 //2px border
                 this.game.ctx.strokeStyle = 'gray';
@@ -17,7 +17,7 @@ export default class Board implements Entity {
         })
     }
 
-    matrix: (number | string)[][] = [];
+    matrix: string[][] = [];
 
     constructor(private readonly game: Game) {
         this.create_board(game);
@@ -27,10 +27,10 @@ export default class Board implements Entity {
 
 
     private create_board(game: Game) {
-        for (let x = 0; x < this.game.row; x++) {
+        for (let x = 0; x < this.game.board_rows; x++) {
             const row = [];
-            for (let y = 0; y < game.columns; y++) {
-                row.push(0);
+            for (let y = 0; y < game.board_columns; y++) {
+                row.push('black');
             }
             this.matrix.push(row);
         }

@@ -15,7 +15,7 @@ export default class Piece implements Entity {
     private movement_queue: Set<string> = new Set();
     protected calculate_start_position(game: Game) {
         this.position = new Vector2(
-            (game.ctx.canvas.width / 2) -
+            (game.board_columns * game.grid_size / 2) -
             (this.matrix[0].length * game.grid_size / 2) -
             (this.matrix[0].length % 2 * game.grid_size / 2),
             0
