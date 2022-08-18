@@ -11,6 +11,7 @@ export class Game {
     score!: Score;
     state: string = 'paused';
     ui!: UI;
+    next_piece!: Piece;
     check_for_collision() {
         if (this.collides) {
             this.current_piece.position.y -= this.grid_size;
@@ -18,13 +19,14 @@ export class Game {
             this.check_for_score();
             let index = this.entities.indexOf(this.current_piece);
             this.entities.splice(index, 1);
-            if(this.check_for_game_over) return;
-            this.current_piece = this.get_random_piece;
+            if (this.check_for_game_over) return;
+            this.current_piece = this.next_piece;
+            this.next_piece = this.get_random_piece;
+            this.current_piece.calculate_start_position();
             this.entities.push(this.current_piece);
-            // this.entities = [this.board, this.current_piece];
         }
     }
-    private get check_for_game_over():boolean {
+    private get check_for_game_over(): boolean {
         for (let i = 0; i < this.board.matrix[3].length; i++) {
             if (this.board.matrix[3][i] !== 'black') {
                 this.state = 'game_over';
@@ -55,7 +57,7 @@ export class Game {
     readonly board_rows = 20;
     readonly board_columns = 12;
     private readonly info_rows = 20;
-    private readonly info_columns = 4;
+    private readonly info_columns = 5;
     private readonly total_columns = this.board_columns + this.info_columns;
     grid_size!: number;
     private current_piece!: Piece;
@@ -113,12 +115,19 @@ export class Game {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.draw_next_piece();
         this.entities.map(entity => entity.draw());
+    }
+    draw_next_piece() {
+        this.next_piece.position.x = (this.board_columns + 1) * this.grid_size;
+        this.next_piece.position.y = 5 * this.grid_size;
+        this.next_piece.draw();
     }
 
     private init() {
         this.board = new Board(this);
         this.current_piece = this.get_random_piece;
+        this.next_piece = this.get_random_piece;
         this.score = new Score(this)
         this.ui = new UI(this);
         this.entities = [this.board, this.score, this.current_piece, this.ui];

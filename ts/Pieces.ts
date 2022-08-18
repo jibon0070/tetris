@@ -12,12 +12,11 @@ export default class Piece implements Entity {
     }
     position!: Vector2;
     velocity: Vector2;
-    private movement_queue: Set<string> = new Set();
-    protected calculate_start_position(game: Game) {
+    calculate_start_position() {
         this.position = new Vector2(
-            (game.board_columns * game.grid_size / 2) -
-            (this.matrix[0].length * game.grid_size / 2) -
-            (this.matrix[0].length % 2 * game.grid_size / 2),
+            (this.game.board_columns * this.game.grid_size / 2) -
+            (this.matrix[0].length * this.game.grid_size / 2) -
+            (this.matrix[0].length % 2 * this.game.grid_size / 2),
             0
         );
     }
